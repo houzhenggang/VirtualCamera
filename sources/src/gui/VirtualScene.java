@@ -4,10 +4,11 @@ import model.Point3D;
 import model.Vector3D;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class VirtualScene {
 
-    public static ArrayList<Vector3D> createScene(){
+    public static List<Vector3D> createScene(){
 
         ArrayList<Vector3D> scene = new ArrayList<Vector3D>();
 
@@ -98,29 +99,6 @@ public class VirtualScene {
         scene.add(new Vector3D(F4, H4));
         scene.add(new Vector3D(H4, G4));
         scene.add(new Vector3D(G4, E4));
-
-
-//        Point3D p1A = new Point3D(-35.0, -10.0, 125.0, 1);
-//        Point3D p1B = new Point3D(-30.0, -10.0, 125.0, 1);
-//        Point3D p1C = new Point3D(-30.0, -10.0, 133.0, 1);
-//        Point3D p1D = new Point3D(-35.0, -10.0, 133.0, 1);
-//        Point3D p1E = new Point3D(-35.0, 25.0, 125.0, 1);
-//        Point3D p1F = new Point3D(-30.0, 25.0, 125.0, 1);
-//        Point3D p1G = new Point3D(-30.0, 25.0, 133.0, 1);
-//        Point3D p1H = new Point3D(-35.0, 25.0, 133.0, 1);
-//
-//        scene.add(new Vector3D(p1A, p1B));
-//        scene.add(new Vector3D(p1B, p1C));
-//        scene.add(new Vector3D(p1C, p1D));
-//        scene.add(new Vector3D(p1D, p1A));
-//        scene.add(new Vector3D(p1E, p1F));
-//        scene.add(new Vector3D(p1F, p1G));
-//        scene.add(new Vector3D(p1G, p1H));
-//        scene.add(new Vector3D(p1H, p1E));
-//        scene.add(new Vector3D(p1A, p1E));
-//        scene.add(new Vector3D(p1D, p1H));
-//        scene.add(new Vector3D(p1B, p1F));
-//        scene.add(new Vector3D(p1C, p1G));
 
         return scene;
     }

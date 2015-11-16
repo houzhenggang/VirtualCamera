@@ -11,6 +11,9 @@ public class Application extends JFrame{
         cameraView.initScene();
         view.getContentPane().add(cameraView, BorderLayout.CENTER);
         view.setVisible(true);
+
+        KeyListener keysListener = new KeyListener(cameraView);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keysListener);
     }
 
 }
