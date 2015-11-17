@@ -53,19 +53,23 @@ public class CameraView extends JPanel {
 
     private void splitVerticalOrSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
         for (int i = 0; i < amountOfElements; i++) {
+
+            Point3D newPointA = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
+            Point3D newPointB = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
             Point3D newPointC = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
             Point3D newPointD = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
 
             newPointC.y += WALL_ELEMENT_HEIGHT;
             newPointD.y += WALL_ELEMENT_HEIGHT;
 
-            Wall w = new Wall(wall.pointA, wall.pointB, newPointD, newPointC, wall.color);
+            Wall w = new Wall(newPointA, newPointB, newPointD, newPointC, wall.color);
             w.isSplited = true;
 
             wallsNet.add(w);
 
-            wall.pointA = newPointC;
-            wall.pointB = newPointD;
+            wall.pointA.y += WALL_ELEMENT_HEIGHT;
+            wall.pointB.y += WALL_ELEMENT_HEIGHT;
+
         }
     }
 
