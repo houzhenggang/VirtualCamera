@@ -47,18 +47,12 @@ public class CameraView extends JPanel {
     }
 
     private void splitWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
-        if (wall.wallType == Wall.Type.VERTICAL) {
-            splitVerticalWall(wall, amountOfElements, wallsNet);
-        } else if (wall.wallType == Wall.Type.HORIZONTAL){
-            //splitHorizontalWall(wall, amountOfElements, wallsNet);
-            wallsNet.add(wall);
-        } else {
-            //splitSideWall(wall, amountOfElements, wallsNet);
-            wallsNet.add(wall);
+        if (wall.wallType == Wall.Type.VERTICAL || wall.wallType == Wall.Type.SIDE) {
+            splitVerticalOrSideWall(wall, amountOfElements, wallsNet);
         }
     }
 
-    private void splitVerticalWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
+    private void splitVerticalOrSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
         for (int i = 0; i < amountOfElements; i++) {
             Point3D newPointC = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
             Point3D newPointD = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
@@ -84,20 +78,6 @@ public class CameraView extends JPanel {
 
             newPointC.z += WALL_ELEMENT_HEIGHT;
             newPointD.z += WALL_ELEMENT_HEIGHT;
-
-            wallsNet.add(new Wall(wall.pointA, wall.pointB, newPointD, newPointC, wall.color));
-            wall.pointA = newPointC;
-            wall.pointB = newPointD;
-        }
-    }
-
-    private void splitSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet){
-        for (int i = 0; i < amountOfElements; i++) {
-            Point3D newPointC = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
-            Point3D newPointD = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
-
-            newPointC.x += WALL_ELEMENT_HEIGHT;
-            newPointD.x += WALL_ELEMENT_HEIGHT;
 
             wallsNet.add(new Wall(wall.pointA, wall.pointB, newPointD, newPointC, wall.color));
             wall.pointA = newPointC;
