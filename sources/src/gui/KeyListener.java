@@ -48,6 +48,8 @@ public class KeyListener implements KeyEventDispatcher {
             cameraView.initScene();
         } else if (e.getKeyChar() == 'c') {
             cameraView.changeMode();
+        } else if (e.getKeyChar() == 'n') {
+            cameraView.changeNetVisibility();
         }
 
         return false;

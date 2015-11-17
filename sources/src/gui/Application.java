@@ -6,6 +6,7 @@ import java.awt.*;
 public class Application extends JFrame{
 
     public static void main(String[] args) {
+
         MainView view = new MainView();
         CameraView cameraView = new CameraView();
         cameraView.initScene();
@@ -14,6 +15,7 @@ public class Application extends JFrame{
 
         KeyListener keysListener = new KeyListener(cameraView);
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keysListener);
+
     }
 
 }

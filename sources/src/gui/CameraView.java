@@ -16,6 +16,7 @@ public class CameraView extends JPanel {
     static double WALL_ELEMENT_HEIGHT = 10.0;
 
     private boolean cameraMode = true;
+    private boolean netVisible = false;
 
     private double DISTANCE = 0.5;
 
@@ -47,9 +48,7 @@ public class CameraView extends JPanel {
     }
 
     private void splitWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
-        if (wall.wallType == Wall.Type.VERTICAL || wall.wallType == Wall.Type.SIDE) {
-            splitVerticalOrSideWall(wall, amountOfElements, wallsNet);
-        }
+        splitVerticalOrSideWall(wall, amountOfElements, wallsNet);
     }
 
     private void splitVerticalOrSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
@@ -119,7 +118,7 @@ public class CameraView extends JPanel {
                 polygon.addPoint(p32d.x, p32d.y);
                 polygon.addPoint(p42d.x, p42d.y);
 
-                if (cameraMode) {
+                if (cameraMode || netVisible) {
                     g.drawLine(p12d.x, p12d.y, p22d.x, p22d.y);
                     g.drawLine(p22d.x, p22d.y, p32d.x, p32d.y);
                     g.drawLine(p32d.x, p32d.y, p42d.x, p42d.y);
@@ -222,6 +221,11 @@ public class CameraView extends JPanel {
 
     public void changeMode() {
         cameraMode = !cameraMode;
+        initScene();
+    }
+
+    public void changeNetVisibility() {
+        netVisible = !netVisible;
         initScene();
     }
 }
