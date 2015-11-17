@@ -7,7 +7,7 @@ public class KeyListener implements KeyEventDispatcher {
 
     private CameraView cameraView;
     private static final Double TRANSLATION_STEP = 0.5;
-    private static final Double ROTATION_FI = 0.01;
+    private static final Double ROTATION_FI = 0.02;
     private static final Double ZOOM_STEP = 0.05;
 
     public KeyListener(CameraView cameraView){
@@ -46,7 +46,10 @@ public class KeyListener implements KeyEventDispatcher {
             cameraView.zoom(-ZOOM_STEP);
         } else if (e.getKeyChar() == 'r') {
             cameraView.initScene();
+        } else if (e.getKeyChar() == 'c') {
+            cameraView.changeMode();
         }
+
         return false;
     }
 }

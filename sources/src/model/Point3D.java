@@ -17,4 +17,8 @@ public class Point3D {
         this.z = z;
         this.w = 1.0;
     }
+
+    public void raiseY(double step){
+        y += step;
+    }
 }
