@@ -1,13 +1,13 @@
 package gui;
 
-import model.*;
+import model.Point2D;
+import model.Point3D;
+import model.Wall;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static util.MathUtil.getDistance;
 
 public class CameraView extends JPanel {
 
@@ -15,7 +15,7 @@ public class CameraView extends JPanel {
     static int SCEANE_HEIGHT = 500;
     static double WALL_ELEMENT_HEIGHT = 10.0;
 
-    private boolean cameraMode = true;
+    private boolean cameraMode = false;
     private boolean netVisible = false;
 
     private double DISTANCE = 0.5;
@@ -31,7 +31,7 @@ public class CameraView extends JPanel {
 
     public void initScene() {
         walls = VirtualScene.createScene();
-        if (!cameraMode) {
+        if (!cameraMode || netVisible) {
             walls = splitWalls();
         }
         this.repaint();
@@ -40,7 +40,7 @@ public class CameraView extends JPanel {
     private ArrayList<Wall> splitWalls() {
         ArrayList<Wall> wallsNet = new ArrayList<Wall>();
         for (Wall wall : walls) {
-            double wallHeight = getDistance(wall.pointA, wall.pointD);
+            double wallHeight = wall.figureHeight;
             int amountOfElements = (int) wallHeight / (int) WALL_ELEMENT_HEIGHT;
             splitWall(wall, amountOfElements, wallsNet);
         }
@@ -48,14 +48,21 @@ public class CameraView extends JPanel {
     }
 
     private void splitWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
-        splitVerticalOrSideWall(wall, amountOfElements, wallsNet);
+        if (wall.wallType == Wall.Type.VERTICAL) {
+            splitVerticalWall(wall, amountOfElements, wallsNet);
+        } else if (wall.wallType == Wall.Type.SIDE) {
+            splitSideWall(wall, amountOfElements, wallsNet);
+        } else {
+//            splitHorizontalWall(wall, amountOfElements, wallsNet);
+            wallsNet.add(wall);
+        }
     }
 
-    private void splitVerticalOrSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
+    private void splitVerticalWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
         for (int i = 0; i < amountOfElements; i++) {
 
             Point3D newPointA = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
-            Point3D newPointB = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
+            Point3D newPointB = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
             Point3D newPointC = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
             Point3D newPointD = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
 
@@ -75,16 +82,40 @@ public class CameraView extends JPanel {
 
     private void splitHorizontalWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
         for (int i = 0; i < amountOfElements; i++) {
+            Point3D newPointA = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
+            Point3D newPointB = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
+            Point3D newPointC = new Point3D(wall.pointD.x, wall.pointD.y, wall.pointD.z);
+            Point3D newPointD = new Point3D(wall.pointC.x, wall.pointC.y, wall.pointC.z);
+
+            newPointA.y -= WALL_ELEMENT_HEIGHT;
+            newPointB.y -= WALL_ELEMENT_HEIGHT;
+            newPointC.y -= WALL_ELEMENT_HEIGHT;
+            newPointD.y -= WALL_ELEMENT_HEIGHT;
+
+            wallsNet.add(new Wall(newPointA, newPointB, newPointD, newPointC, wall.color));
+
+            wall.pointA.y -= WALL_ELEMENT_HEIGHT;
+            wall.pointB.y -= WALL_ELEMENT_HEIGHT;
+            wall.pointC.y -= WALL_ELEMENT_HEIGHT;
+            wall.pointD.y -= WALL_ELEMENT_HEIGHT;
+        }
+    }
+
+
+    private void splitSideWall(Wall wall, int amountOfElements, ArrayList<Wall> wallsNet) {
+        for (int i = 0; i < amountOfElements; i++) {
+            Point3D newPointA = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
+            Point3D newPointB = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
             Point3D newPointC = new Point3D(wall.pointA.x, wall.pointA.y, wall.pointA.z);
             Point3D newPointD = new Point3D(wall.pointB.x, wall.pointB.y, wall.pointB.z);
 
+            newPointC.y -= WALL_ELEMENT_HEIGHT;
+            newPointD.y -= WALL_ELEMENT_HEIGHT;
 
-            newPointC.z += WALL_ELEMENT_HEIGHT;
-            newPointD.z += WALL_ELEMENT_HEIGHT;
+            wallsNet.add(new Wall(newPointA, newPointB, newPointD, newPointC, wall.color));
 
-            wallsNet.add(new Wall(wall.pointA, wall.pointB, newPointD, newPointC, wall.color));
-            wall.pointA = newPointC;
-            wall.pointB = newPointD;
+            wall.pointA.y -= WALL_ELEMENT_HEIGHT;
+            wall.pointB.y -= WALL_ELEMENT_HEIGHT;
         }
     }
 
@@ -230,6 +261,7 @@ public class CameraView extends JPanel {
 
     public void changeNetVisibility() {
         netVisible = !netVisible;
-        initScene();
+        //initScene();
+        repaint();
     }
 }

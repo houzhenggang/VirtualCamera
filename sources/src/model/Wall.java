@@ -1,12 +1,12 @@
 package model;
 
-import java.awt.*;
-
 import util.MathUtil;
 
-public class Wall implements Comparable<Wall>{
+import java.awt.*;
 
-    public enum Type{
+public class Wall implements Comparable<Wall> {
+
+    public enum Type {
         HORIZONTAL, VERTICAL, SIDE
     }
 
@@ -21,6 +21,7 @@ public class Wall implements Comparable<Wall>{
     public Point3D pointD;
 
     public boolean isSplited = false;
+    public double figureHeight;
 
     public Type wallType;
 
@@ -39,25 +40,39 @@ public class Wall implements Comparable<Wall>{
         this.color = color;
     }
 
-    private double getWallDistance(){
-        double tmpMinDistance =  Math.min(Math.abs(pointA.z), Math.abs(pointB.z));
-        double tmpMinDistance2 =  Math.min(Math.abs(pointC.z), Math.abs(pointD.z));
+    public Wall(Point3D pointA, Point3D pointB, Point3D pointC, Point3D pointD, Color color, double figureHeight) {
+        this.pointA = pointA;
+        this.pointB = pointB;
+        this.pointC = pointC;
+        this.pointD = pointD;
+        this.wallType = determinateWallType();
+        this.vectorA = new Vector3D(pointA, pointB);
+        this.vectorB = new Vector3D(pointB, pointC);
+        this.vectorC = new Vector3D(pointC, pointD);
+        this.vectorD = new Vector3D(pointD, pointA);
+        this.color = color;
+        this.figureHeight = figureHeight;
+    }
+
+    private double getWallDistance() {
+        double tmpMinDistance = Math.min(Math.abs(pointA.z), Math.abs(pointB.z));
+        double tmpMinDistance2 = Math.min(Math.abs(pointC.z), Math.abs(pointD.z));
         return Math.min(tmpMinDistance, tmpMinDistance2);
     }
 
-    private double getWallDistance2(){
-        double tmpMinDistance =  Math.min(Math.abs(pointA.x), Math.abs(pointB.x));
-        double tmpMinDistance2 =  Math.min(Math.abs(pointC.x), Math.abs(pointD.x));
+    private double getWallDistance2() {
+        double tmpMinDistance = Math.min(Math.abs(pointA.x), Math.abs(pointB.x));
+        double tmpMinDistance2 = Math.min(Math.abs(pointC.x), Math.abs(pointD.x));
         return Math.min(tmpMinDistance, tmpMinDistance2);
     }
 
-    private double getWallDistance3(){
-        double tmpMinDistance =  Math.min(Math.abs(pointA.y), Math.abs(pointB.y));
-        double tmpMinDistance2 =  Math.min(Math.abs(pointC.y), Math.abs(pointD.y));
+    private double getWallDistance3() {
+        double tmpMinDistance = Math.min(Math.abs(pointA.y), Math.abs(pointB.y));
+        double tmpMinDistance2 = Math.min(Math.abs(pointC.y), Math.abs(pointD.y));
         return Math.min(tmpMinDistance, tmpMinDistance2);
     }
 
-    private Type determinateWallType(){
+    private Type determinateWallType() {
         if (MathUtil.isEqual(pointA.x, pointB.x, pointC.x, pointD.x)) {
             return Type.SIDE;
         } else if (MathUtil.isEqual(pointA.y, pointB.y, pointC.y, pointD.y)) {
